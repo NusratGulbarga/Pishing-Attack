@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Phishing URL Detector</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <style>
+        /* Background Image */
+        body {
+            background-image: url('https://source.unsplash.com/1600x900/?cybersecurity,technology'); /* Change URL as needed */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        /* Header */
+        .navbar {
+            background: rgba(0, 0, 0, 0.8);
+        }
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        /* Container */
+        .content-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            margin: 80px auto;
+        }
+
+        /* Heading */
+        h2 {
+            font-family: 'Arial', sans-serif;
+            color: #2c3e50;
+        }
+
+        /* Input & Button */
+        .btn-primary {
+            background-color: #3498db;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            padding: 10px 20px;
+            transition: 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            text-align: center;
+            padding: 5px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        /* Alert Box */
+        .alert {
+            font-size: 18px;
+            font-weight: bold;
+            animation: fadeIn 0.5s;
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">🔍 Phishing URL Detector</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="content-container">
+        <h2 class="text-center">Check If a URL is Safe</h2>
+        <p class="text-center text-muted">Enter a website URL to verify if it is a phishing site or safe.</p>
+
+        <div class="card shadow p-4 mt-4">
+            <form id="phishingForm">
+                <label for="url" class="form-label">Enter a URL:</label>
+                <input type="text" id="url" name="url" class="form-control" placeholder="https://example.com" required>
+                <button type="submit" class="btn btn-primary mt-3 w-100">Check</button>
+            </form>
+            <div id="result" class="mt-3 text-center"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Phishing URL Detector | Secure Your Browsing</p>
+    </footer>
+
+    <script>
+        $("#phishingForm").submit(function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/predict",
+                data: $(this).serialize(),
+                success: function(response) {
+                    if (response.prediction === 1) {
+                        $("#result").html('<div class="alert alert-danger">🛑 This URL is a Phishing Site!</div>');
+                    } else {
+                        $("#result").html('<div class="alert alert-success">✅ This URL is Safe.</div>');
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
